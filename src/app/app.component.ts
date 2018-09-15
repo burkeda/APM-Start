@@ -11,5 +11,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   // tslint:disable-next-line:no-inferrable-types
-  pageTitle: string = 'Acme Product Management';
+  pageTitle: string = 'Cohort Designer';
 }

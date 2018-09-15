@@ -1,4 +1,6 @@
+// tslint:disable:no-inferrable-types
 import { Component } from '@angular/core';
+
 
 
 @Component({
@@ -9,8 +11,11 @@ import { Component } from '@angular/core';
 
 
 export class ProductListComponent {
-  // tslint:disable-next-line:no-inferrable-types
-  pageTitle: string = 'Awesome Product list';
+  pageTitle: string = 'Awesome CD list';
+  imageWidth: number = 50;
+  imageMargin: number = 2;
+  showImage: boolean = false;
+  listFilter: string = 'cart';
   products: any[] = [
     {
       'productId': 1,
@@ -43,4 +48,14 @@ export class ProductListComponent {
       'imageUrl': 'https://openclipart.org/image/300px/svg_to_png/73/rejon_Hammer.png'
     }
   ];
+
+  toggleImage(): void {
+    // interesting way to declare private member functions
+    // this.showImage = this.newMethod();
+    this.showImage = !this.showImage;
+  }
+
+  // private newMethod(): boolean {
+  //   return !this.showImage;
+  // }
 }
