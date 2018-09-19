@@ -66,8 +66,8 @@
             </td>
             <td>{{ product.productName }}</td>
             <!-- Data-Binding Pipe to format output -->
-            <td>{{ product.productCode | lowercase }}</td>
-            <td>{{ product.productDate }}</td>
+            <td>{{ product.productCode | lowercase | convertToSpaces: '-' }}</td>
+            <td>{{ product.releaseDate }}</td>
             <!-- Data-Binding Pipe with params to format output -->
             <td>{{ product.price | currency:'USD':'symbol':'1.2-2' }}</td>
             <td>{{ product.starRating }}</td>
