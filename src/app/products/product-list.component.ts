@@ -12,11 +12,24 @@ import { IProduct } from './product';
 
 
 export class ProductListComponent implements OnInit {
+
   pageTitle: string = 'Awesome CD list';
   imageWidth: number = 50;
   imageMargin: number = 2;
   showImage: boolean = false;
-  listFilter: string = 'cart';
+  // listFilter: string = 'cart';      // a way to know when the user changes the list filter text
+
+  private _listFilter: string;
+  public get listFilter(): string {
+    return this._listFilter;
+  }
+  public set listFilter(value: string) {
+    this._listFilter = value;
+    this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
+  }
+
+  filteredProducts: IProduct[];    // array for holding our filteredProducts list
+
   products: IProduct[] = [       // any[] = [
     {
       'productId': 1,
@@ -50,6 +63,29 @@ export class ProductListComponent implements OnInit {
     }
   ];
 
+  constructor() {
+    this.filteredProducts = this.products;
+    this.listFilter = 'cart';
+  }
+
+  onRatingClicked(message: string): void {
+    console.log(`In component class ProductList, onRatingClicked payload: ${message}`);
+    this.pageTitle = 'CD List ' + message;
+  }
+
+  performFilter(filterBy: string): IProduct[] {
+    try {
+
+    filterBy = filterBy.toLocaleLowerCase();
+    return this.products.filter((product: IProduct) =>
+      // tslint:disable-next-line:no-non-null-assertion
+      product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
+
+    } catch (e) {
+      throw new Error(e.Message);
+    }
+  }
+
   toggleImage(): void {
     // interesting way to declare private member functions
     // this.showImage = this.newMethod();
@@ -61,6 +97,6 @@ export class ProductListComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    console.log('In OnInit');
+    console.log('In component class ProductList, In OnInit');
   }
 }

@@ -56,7 +56,7 @@
         <tbody>
 
           <!-- Dynamic content here -->
-          <tr *ngFor="let product of products">
+          <tr *ngFor="let product of filteredProducts">
             <td>
               <img *ngIf='showImage'
                    [src]='product.imageUrl'
@@ -70,7 +70,30 @@
             <td>{{ product.releaseDate }}</td>
             <!-- Data-Binding Pipe with params to format output -->
             <td>{{ product.price | currency:'USD':'symbol':'1.2-2' }}</td>
-            <td>{{ product.starRating }}</td>
+            <td>
+              <!-- {{ product.starRating }} -->
+              <!-- Nested comp prop rating must use @Input decorator to receive binding from
+                    this outer container comp
+                  Using the Nested Comp as Directive via its selector
+                  The only time we can speficiy a nested comp prop as a
+                    prop binding target on the left side of an equeals is
+                    when that property is decorated with the @Input directive in the nested component
+                  Anytime the container data changes, the ngOnChanges
+                    lifecycle event is generated in Inner Comp and the star width is recalcuated
+              -->
+              <!-- We listen for the raised event issued from the star
+                    component (ratingClicked)
+                  We'll define an event in the prod list comp to process that event
+                    ie. onRatingClicked
+              -->
+              <pm-star [rating]='product.starRating'
+                (ratingClicked)='onRatingClicked($event)'></pm-star>
+                <!-- ratingClicked is defined in nested comp as EventEmitter<string>
+                    Event binding to respond and pass $event payload to nested component,
+                     Nested comp must expose EventEmitter via @Output
+                     Directive
+                -->
+            </td>
           </tr>
 
         </tbody>
