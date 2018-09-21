@@ -1,6 +1,7 @@
 // tslint:disable:no-inferrable-types
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from './product';
+import { ProductService } from './product.service';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class ProductListComponent implements OnInit {
   imageMargin: number = 2;
   showImage: boolean = false;
   // listFilter: string = 'cart';      // a way to know when the user changes the list filter text
+  errorMessage: string;
 
   private _listFilter: string;
   public get listFilter(): string {
@@ -29,43 +31,12 @@ export class ProductListComponent implements OnInit {
   }
 
   filteredProducts: IProduct[];    // array for holding our filteredProducts list
+  products: IProduct[] = [];       // any[] = [];
 
-  products: IProduct[] = [       // any[] = [
-    {
-      'productId': 1,
-      'productName': 'Leaf Rake',
-      'productCode': 'GDN-0011',
-      'releaseDate': 'March 19, 2016',
-      'description': 'Leaf rake with 48-inch wooden handle.',
-      'price': 19.95,
-      'starRating': 3.2,
-      'imageUrl': 'https://openclipart.org/image/300px/svg_to_png/26215/Anonymous_Leaf_Rake.png'
-    },
-    {
-      'productId': 2,
-      'productName': 'Garden Cart',
-      'productCode': 'GDN-0023',
-      'releaseDate': 'March 18, 2016',
-      'description': '15 gallon capacity rolling garden cart',
-      'price': 32.99,
-      'starRating': 4.2,
-      'imageUrl': 'https://openclipart.org/image/300px/svg_to_png/58471/garden_cart.png'
-    },
-    {
-      'productId': 5,
-      'productName': 'Hammer',
-      'productCode': 'TBX-0048',
-      'releaseDate': 'May 21, 2016',
-      'description': 'Curved claw steel hammer',
-      'price': 8.9,
-      'starRating': 4.8,
-      'imageUrl': 'https://openclipart.org/image/300px/svg_to_png/73/rejon_Hammer.png'
-    }
-  ];
-
-  constructor() {
-    this.filteredProducts = this.products;
-    this.listFilter = 'cart';
+  // when instance of ProductList Component is created,
+  //  the Angular injector injects the instance of the ProductService
+  constructor(private productService: ProductService) {
+    // this.listFilter = 'cart';
   }
 
   onRatingClicked(message: string): void {
@@ -96,7 +67,38 @@ export class ProductListComponent implements OnInit {
   //   return !this.showImage;
   // }
 
+  // Lifecycle hook, a place to perform any initialization and
+  //  retrieve data from service
+  // We want to set the products property to the products returned from our service
+  //  to call the service we use our private variable containing the instance of the injected service
   ngOnInit(): void {
     console.log('In component class ProductList, In OnInit');
+    // this.products = this.productService.getProducts();
+
+    // Now that our product service is returning an observable,
+    //  any class that needs product data such as our product list
+    //  component  can call our service and subscribe to the returned
+    //  observable
+    // Since Observable does not return until subscribed to, this getProducst
+    //  call kicks off the http request.
+    // It is then setup to asynchronously receive data and
+    //  notifcatiosn from the observable
+    this.productService.getProducts().subscribe(
+      // The first function passed to the subscribe method specifies the action to take whenever the observable emits an item
+      // The method paramater (products) is that emitted item.
+      // Since http operations are single asynchronous operations,
+      //  only a single item is emitted which is the http reposne object
+      //  that was mapped to our product array in the service, so the
+      //  parameter is our array of products
+      products => {
+        this.products = products, // This code then sets the local products property to the returned array of products
+        this.filteredProducts = this.products;
+      },
+      error => this.errorMessage = <any>error
+    );
+
+
+    // move this into subscribe
+    // this.filteredProducts = this.products;
   }
 }
