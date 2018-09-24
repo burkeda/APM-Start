@@ -1,0 +1,10 @@
+<div class='card' *ngIf='product'>
+  <!--
+    Better way is to add the ngIf and check for product object,
+    then we don't need to use the SNO(Safe Navigation Operator)
+      product?.productName
+  -->
+  <div class='card-header'>
+    {{ pageTitle + ': ' + product.productName }}
+  </div>
+</div>
