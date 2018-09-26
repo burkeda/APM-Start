@@ -19,6 +19,8 @@ import { Component } from '@angular/core';
     </div>
   `
   /*
+    The router is hosted here.
+
     Now, we just need to tell angular where to place our views and display the
     routed component's template.
 

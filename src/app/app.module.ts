@@ -20,6 +20,7 @@ import { ConverToSpacesPipe } from './shared/convert-to-spaces.pipe';
 import { StarComponent } from './shared/star.component';
 import { ProductDetailComponent } from './products/product-detail.component';
 import { WelcomeComponent } from './home/welcome.component';
+import { ProductDetailGuard } from './products/product-detail.guard';
 
 // tslint:disable:max-line-length
 
@@ -72,7 +73,13 @@ import { WelcomeComponent } from './home/welcome.component';
         More specific routes should always be before less specific
       */
       { path: 'products', component: ProductListComponent },
-      { path: 'products/:id', component: ProductDetailComponent },  // Passing a param
+      { path: 'products/:id',
+        canActivate: [ProductDetailGuard],    // Array of guards
+        component: ProductDetailComponent },  // Passing a param
+          /*
+            We add canActivate and set it to the guards to execute
+            before this route is activated
+          /*
       { path: 'welcome', component: WelcomeComponent },
       { path: '', redirectTo: 'welcome', pathMatch: 'full' },
       /*
