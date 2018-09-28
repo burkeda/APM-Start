@@ -3,7 +3,7 @@ import { Component, OnChanges, Input, EventEmitter, SimpleChanges, Output } from
 // tslint:disable:no-trailing-whitespace
 
 @Component({
-  selector: 'pm-star',
+  selector: 'pm-star',    // selector signifies a nested component via Directive <pm-star />
   templateUrl: './star.component.html',
   styleUrls: ['./star.component.css']
 })

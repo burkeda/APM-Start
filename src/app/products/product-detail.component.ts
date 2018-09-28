@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnDestroy, OnDestroy, OnDestroy, OnDestroy, OnDestroy, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { IProduct } from './product';
@@ -10,7 +10,7 @@ import { IProduct } from './product';
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css']
 })
-export class ProductDetailComponent implements OnInit, OnDestroy {
+export class ProductDetailComponent implements OnInit { // , OnDestroy
 
   // tslint:disable-next-line:no-inferrable-types
   pageTitle: string = 'Product detail';
@@ -39,9 +39,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
               private router: Router) {
   }
 
-  ngOnDestroy() {
+  // ngOnDestroy() {
+  //   console.log('ProductDetailComponent: ngOnDestroy');
+  // }
 
-  },
   ngOnInit() {
     // tslint:disable:quotemark
     // tslint:disable-next-line:prefer-const
